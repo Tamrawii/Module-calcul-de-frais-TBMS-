@@ -1,6 +1,12 @@
-package com.example;
+package com.example.CLI;
 
 import java.util.Scanner;
+
+import com.example.model.CalculFrais;
+import com.example.model.Membre;
+import com.example.model.Reservation;
+import com.example.model.TypeMetier;
+import com.example.model.TypeReservation;
 
 public class Main {
     public static void main(String[] args) {
@@ -82,7 +88,7 @@ public class Main {
         rep = sc.nextInt();
         sc.close();
 
-        CalculFrais calc = new CalculFrais("src/main/java/com/example/cotisations.cfg", montantBase);
+        CalculFrais calc = new CalculFrais("cotisations.cfg", montantBase);
 
         if (rep == 1)
             calc.afficherCalcul(reservation);

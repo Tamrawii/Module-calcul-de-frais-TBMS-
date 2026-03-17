@@ -1,4 +1,4 @@
-package com.example;
+package com.example.model;
 
 import java.util.ArrayList;
 
@@ -55,7 +55,7 @@ public class CalculFrais {
         else if (m.estMineur())
             return 0.5f;
         else
-            return 0;
+            return 1.0f;
     }
 
     public float appliquerCotisation(Membre m) {
@@ -65,59 +65,22 @@ public class CalculFrais {
     public void afficherCalcul(Reservation r) {
         calculerReservation(r);
 
+        ArrayList<Membre> membres = r.getListeMembres();
+        float total = 0;
+
+        for (Membre m : membres) {
+            total += m.getMontant();
+        }
+
+        r.setMontantTotal(total);
+
         System.out.println("====================");
         System.out.println("| CALCUL DES FRAIS |");
         System.out.println("====================");
         System.out.println("Montant de base     : " + mb + " TND");
         System.out.println("Type de réservation : " + r.getTypereservation());
+        System.out.println("Nombre de membres   : " + r.nbMembres());
         System.out.println("--------------------------------");
-
-        ArrayList<Membre> membres = r.getListeMembres();
-        float total = 0;
-
-        for (int i = 0; i < membres.size(); i++) {
-            Membre m = membres.get(i);
-
-            System.out.println("-Membre " + (i + 1) + "-");
-            System.out.println("Age: " + m.getAge() + " ans");
-
-            // afficher statut et réduction appliquée
-            if (r.getTypereservation() != TypeReservation.Duo) {
-                if (m.estHandicape()) {
-                    System.out.println("Statut : Handicapé -> 15%");
-                } else if (m.estMineur()) {
-                    System.out.println("Statut : Mineur -> 50%");
-                } else if (m.estSenior()) {
-                    System.out.println("Statut : Senior -> 10%");
-                } else {
-                    System.out.println("Statut : Adulte -> 0%");
-                }
-            }
-
-            // afficher métier et cotisation si non-handicapé
-            if (!m.estHandicape() && m.getMetier() != TypeMetier.Autre) {
-                System.out.println("Métier: " + m.getMetier());
-                float cotisation = loader.getCotisation(m.getMetier().toString());
-                System.out.println("Cotisation: -" + cotisation + " TND");
-            }
-
-            // afficher réduction duo
-            if (r.getTypereservation() == TypeReservation.Duo) {
-                System.out.println("Réduction duo: -4%");
-            }
-
-            // afficher réduction 4e membre familial
-            if (r.getTypereservation() == TypeReservation.Familiale && (i + 1) % 4 == 0) {
-                System.out.println("Réduction familial: -5% (4e membre)");
-            }
-
-            System.out.println("Montant dû   : " + m.getMontant() + " TND");
-            System.out.println("--------------------------------");
-
-            total += m.getMontant();
-        }
-
-        r.setMontantTotal(total);
         System.out.println("TOTAL À PAYER : " + total + " TND");
         System.out.println("--------------------------------");
     }
