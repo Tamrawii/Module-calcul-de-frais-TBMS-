@@ -12,11 +12,9 @@ public class Main {
     public static void main(String[] args) {
         // Déclaration
         float montantBase;
-        int age;
         int rep;
         int repType;
         int nbMembre = 0;
-        boolean modeSimulation = false;
         Reservation reservation = new Reservation();
         boolean estHandicape;
         // I/O

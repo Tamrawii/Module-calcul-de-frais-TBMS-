@@ -12,14 +12,20 @@ public class CalculFrais {
     }
 
     public void calculerPourMembre(Membre m) {
+        // Si le type du métier choisi est "Autre" alors on ignore le chargement du
+        // fichier cotisation.cfg
         if (m.getMetier() == TypeMetier.Autre)
             m.setMontant(mb * choisirMeilleureOption(m));
         else
+            // Un employé dans la liste cotisation.cgf ne peut pas être mineur, senior ou
+            // handicapé
             m.setMontant(appliquerCotisation(m));
     }
 
     public void calculerReservation(Reservation r) {
         ArrayList<Membre> listeMembres = r.getListeMembres();
+        // Si le type de réservation est "Individuelle" on n'a pas besoin de parcourir
+        // la liste
         if (r.getTypereservation() == TypeReservation.Individuelle)
             calculerPourMembre(listeMembres.get(0));
         else if (r.getTypereservation() == TypeReservation.Duo) {
@@ -38,6 +44,7 @@ public class CalculFrais {
             for (int i = 0; i < r.nbMembres(); i++) {
                 Membre m = listeMembres.get(i);
 
+                // Appliquer une réduction de 5% pour le 4e membre
                 if ((i + 1) % 4 == 0) {
                     calculerPourMembre(m);
                     m.setMontant(m.getMontant() * 0.95f);
@@ -99,7 +106,6 @@ public class CalculFrais {
         for (int i = 0; i < membres.size(); i++) {
             Membre m = membres.get(i);
 
-            // calculer localement sans modifier le membre
             float montant;
 
             if (r.getTypereservation() == TypeReservation.Duo) {
